@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bazarr
+  namespace: {{ .Values.namespace }}
+  labels: { app: bazarr }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: bazarr }
+  template:
+    metadata:
+      labels: { app: bazarr }
+    spec:
+      containers:
+        - name: bazarr
+          image: {{ .Values.images.bazarr }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: {{ .Values.ports.bazarr }}
+          env:
+            - name: PUID
+              value: "{{ .Values.puid }}"
+            - name: PGID
+              value: "{{ .Values.pgid }}"
+            - name: TZ
+              value: "{{ .Values.tz }}"
+            - name: UMASK
+              value: "{{ .Values.umask }}"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /media
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: bazarr-config
+        - name: media
+          persistentVolumeClaim:
+            claimName: {{ .Values.media.pvcName }}

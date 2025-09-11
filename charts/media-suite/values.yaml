@@ -1,0 +1,43 @@
+namespace: media-center
+
+images:
+  sonarr: ghcr.io/linuxserver/sonarr:latest
+  radarr: ghcr.io/linuxserver/radarr:latest
+  bazarr: ghcr.io/linuxserver/bazarr:latest
+
+puid: 1000
+pgid: 1000
+tz: Asia/Shanghai
+umask: "022"
+
+media:
+  pvName: nfs-media-pv
+  pvcName: media-pvc
+  size: 20Ti
+  accessModes:
+    - ReadWriteMany
+
+config:
+  storageClassName: nfs-shared
+  size: 20Ti
+  accessModes:
+    - ReadWriteMany
+
+ports:
+  sonarr: 8989
+  radarr: 7878
+  bazarr: 6767
+
+gateway:
+  name: edge      # 你的 Gateway 名字
+  namespace: traefik         # Gateway 所在命名空间
+  entryPoints:
+    - web
+    - websecure
+  tls: true                  # 是否启用 TLS
+  middlewares:
+    - sso-then-basic         # 中间件，已存在于 traefik namespace
+  hosts:
+    sonarr: sonarr.tuna.io
+    radarr: radarr.tuna.io
+    bazarr: bazarr.tuna.io

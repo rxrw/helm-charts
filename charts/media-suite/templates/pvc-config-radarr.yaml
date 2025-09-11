@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-config
+  namespace: {{ .Values.namespace }}
+spec:
+  accessModes: {{ toYaml .Values.config.accessModes | nindent 2 }}
+  resources:
+    requests:
+      storage: {{ .Values.config.size }}
+  storageClassName: {{ .Values.config.storageClassName | quote }}
