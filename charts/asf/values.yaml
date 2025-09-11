@@ -37,6 +37,8 @@ ingress:
         - path: /
           pathType: Prefix
   tls: []
+  # Optional middleware for HTTPRoute
+  middleware: ""
 
 resources: {}
 
