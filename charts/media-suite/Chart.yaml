@@ -2,7 +2,7 @@ apiVersion: v2
 name: media-suite
 description: Deploy Sonarr, Radarr, Bazarr with shared NFS media PV and Traefik IngressRoute
 type: application
-version: 0.1.2
+version: 0.1.3
 appVersion: "1.0.1"
 keywords:
   - media
