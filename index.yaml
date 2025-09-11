@@ -3,6 +3,17 @@ entries:
   asf:
   - apiVersion: v2
     appVersion: "1"
+    created: "2025-09-11T13:55:39.424939765Z"
+    description: A Helm chart for asf
+    digest: 010b1724de8bb16f4dc41c5fdf69f73ba994ca6a829ef5c390d20aa0c6673a3c
+    icon: https://trakt.tv/assets/logos/white-bg@2x-626e9680c03d0542b3e26c3305f58050d2178e5d4222fac7831d83cf37fef42b.png
+    name: asf
+    type: application
+    urls:
+    - https://github.com/rxrw/helm-charts/releases/download/asf-0.2.4/asf-0.2.4.tgz
+    version: 0.2.4
+  - apiVersion: v2
+    appVersion: "1"
     created: "2025-09-11T13:39:59.927657144Z"
     description: A Helm chart for asf
     digest: 16a79ae9ad071d323c57df8a88920904814e841d0e0fa635e6e9daf168c9ab3d
@@ -26,6 +37,17 @@ entries:
   ddns-go:
   - apiVersion: v2
     appVersion: "1"
+    created: "2025-09-11T13:55:39.677063159Z"
+    description: A Helm chart for ddns-go
+    digest: f0e4783e965f572473d51dc1af8fd971ee5c8e99be71dd0ab9ee8f3408e3064c
+    icon: https://trakt.tv/assets/logos/white-bg@2x-626e9680c03d0542b3e26c3305f58050d2178e5d4222fac7831d83cf37fef42b.png
+    name: ddns-go
+    type: application
+    urls:
+    - https://github.com/rxrw/helm-charts/releases/download/ddns-go-0.2.4/ddns-go-0.2.4.tgz
+    version: 0.2.4
+  - apiVersion: v2
+    appVersion: "1"
     created: "2025-09-11T13:40:00.099731632Z"
     description: A Helm chart for ddns-go
     digest: 251ce9640fe7b700256354f8077d12f30880456be7c00862a83b04f3138b9a69
@@ -47,6 +69,29 @@ entries:
     - https://github.com/rxrw/helm-charts/releases/download/ddns-go-0.1.6/ddns-go-0.1.6.tgz
     version: 0.1.6
   media-suite:
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2025-09-11T13:55:39.940059549Z"
+    description: Deploy Sonarr, Radarr, Bazarr with shared NFS media PV and Traefik
+      IngressRoute
+    digest: a17eeb5c8b9dd8a8fff62b93084874efc0b346c076f6090d92595e6978966091
+    home: https://github.com/rxrw/helm-charts
+    keywords:
+    - media
+    - sonarr
+    - radarr
+    - bazarr
+    - plex
+    maintainers:
+    - email: rxrw@example.com
+      name: rxrw
+    name: media-suite
+    sources:
+    - https://github.com/rxrw/helm-charts
+    type: application
+    urls:
+    - https://github.com/rxrw/helm-charts/releases/download/media-suite-0.1.4/media-suite-0.1.4.tgz
+    version: 0.1.4
   - apiVersion: v2
     appVersion: 1.0.1
     created: "2025-09-11T13:40:00.261685371Z"
@@ -96,6 +141,17 @@ entries:
   qinglong:
   - apiVersion: v2
     appVersion: "1"
+    created: "2025-09-11T13:55:40.201483913Z"
+    description: A Helm chart for qinglong
+    digest: ff4d12f4ef29297065e1bdd04fbc9b81120e57b34c7a5d8ac2fdff651f54f9c8
+    icon: https://trakt.tv/assets/logos/white-bg@2x-626e9680c03d0542b3e26c3305f58050d2178e5d4222fac7831d83cf37fef42b.png
+    name: qinglong
+    type: application
+    urls:
+    - https://github.com/rxrw/helm-charts/releases/download/qinglong-0.2.4/qinglong-0.2.4.tgz
+    version: 0.2.4
+  - apiVersion: v2
+    appVersion: "1"
     created: "2025-09-11T13:40:00.412517973Z"
     description: A Helm chart for qinglong
     digest: f203281e19b64ae7cc6a33e97c292b8ee106f9304fee3ecc2de657ecc4d115f9
@@ -116,4 +172,4 @@ entries:
     urls:
     - https://github.com/rxrw/helm-charts/releases/download/qinglong-0.1.3/qinglong-0.1.3.tgz
     version: 0.1.3
-generated: "2025-09-11T13:40:00.412556325Z"
+generated: "2025-09-11T13:55:40.201515863Z"
