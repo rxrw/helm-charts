@@ -21,7 +21,7 @@ spec:
 {{- if .Values.gateway.middlewares }}
         - type: ExtensionRef
           extensionRef:
-            group: traefik.containo.us
+            group: traefik.io
             kind: Middleware
             name: {{ index .Values.gateway.middlewares 0 }}
             namespace: {{ .Values.gateway.namespace }}
