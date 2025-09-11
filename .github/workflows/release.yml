@@ -2,58 +2,31 @@ name: Release Charts
 
 on:
   push:
-    branches: [ "main" ]
-  workflow_dispatch:
-
-permissions:
-  contents: write
+    branches:
+      - main
 
 jobs:
   release:
+    # depending on default permission settings for your org (contents being read-only or read-write for workloads), you will have to add permissions
+    # see: https://docs.github.com/en/actions/security-guides/automatic-token-authentication#modifying-the-permissions-for-the-github_token
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - name: Setup Helm
-        uses: azure/setup-helm@v4
-        with:
-          version: v3.14.4
-
-      - name: Install chart-releaser
+      - name: Configure Git
         run: |
-          curl -sSL https://github.com/helm/chart-releaser/releases/download/v1.6.1/chart-releaser_1.6.1_linux_amd64.tar.gz \
-          | tar -xz
-          sudo mv cr /usr/local/bin/cr
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
-      - name: Package charts
-        run: |
-          mkdir -p .cr-release-packages
-          cr package charts/*
+      - name: Install Helm
+        uses: azure/setup-helm@v3
 
-      - name: Upload chart packages to GitHub Releases
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.5.0
         env:
-          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cr upload \
-            --owner ${{ github.repository_owner }} \
-            --git-repo ${{ github.event.repository.name }} \
-            --skip-existing
-
-      - name: Build index.yaml to gh-pages
-        env:
-          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cr index \
-            --owner ${{ github.repository_owner }} \
-            --git-repo ${{ github.event.repository.name }} \
-            --charts-repo https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
-
-      - name: Publish gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs  # cr index 默认输出到 docs
-          publish_branch: gh-pages
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
