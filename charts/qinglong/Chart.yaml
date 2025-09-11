@@ -4,4 +4,4 @@ description: A Helm chart for qinglong
 icon: https://trakt.tv/assets/logos/white-bg@2x-626e9680c03d0542b3e26c3305f58050d2178e5d4222fac7831d83cf37fef42b.png
 name: qinglong
 type: application
-version: 0.1.3
+version: 0.2.1

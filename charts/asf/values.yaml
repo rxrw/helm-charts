@@ -1,50 +1,17 @@
 # Default values for asf
-# This is a YAML-formatted file.
-
-replicaCount: 1
-
 image:
   repository: justarchibald/archi-steam-farm
-  pullPolicy: IfNotPresent
   tag: "latest"
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-serviceAccount:
-  create: true
-  annotations: {}
-  name: ""
-
-podAnnotations: {}
-
-podSecurityContext: {}
-
-securityContext: {}
-
 service:
-  type: ClusterIP
   port: 1242
 
-ingress:
+httproute:
   enabled: true
-  className: ""
-  annotations: {}
   hosts:
-    - host: asf.opti.io
-      paths:
-        - path: /
-          pathType: Prefix
-  tls: []
-
-resources: {}
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
+    - asf.tuna.io
+  # Optional middlewares for HTTPRoute (array)
+  middlewares: []
 
 # Storage configuration
 persistence:
