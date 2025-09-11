@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qinglong
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qinglong
+      component: dashboard
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: qinglong
+        component: dashboard
+    spec:
+      containers:
+        - image: whyour/qinglong
+          name: qinglong
+          ports:
+            - containerPort: 5700
+              name: app
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /ql/data
+              name: ql-data
+      volumes:
+        - name: ql-data
+          persistentVolumeClaim:
+            claimName: qinglong-data-pvc
+      restartPolicy: Always

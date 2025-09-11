@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ddns-go
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: helpers
+      component: ddns-go
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: helpers
+        component: ddns-go
+    spec:
+      containers:
+        - image: jeessy/ddns-go
+          name: ddns-go
+          ports:
+            - containerPort: 9876
+              name: app
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /root
+              name: config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: ddns-go-config-pvc
+      restartPolicy: Always

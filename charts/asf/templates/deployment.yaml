@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: asf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: asf
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: asf
+    spec:
+      containers:
+        - image: justarchi/archisteamfarm
+          name: asf
+          ports:
+            - containerPort: 1242
+              name: app
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/config
+              name: config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: asf-config-pvc
+      restartPolicy: Always
