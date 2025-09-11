@@ -2,5 +2,17 @@ apiVersion: v2
 name: media-suite
 description: Deploy Sonarr, Radarr, Bazarr with shared NFS media PV and Traefik IngressRoute
 type: application
-version: 0.1.0
+version: 0.1.1
 appVersion: "1.0.0"
+keywords:
+  - media
+  - sonarr
+  - radarr
+  - bazarr
+  - plex
+home: https://github.com/rxrw/helm-charts
+sources:
+  - https://github.com/rxrw/helm-charts
+maintainers:
+  - name: rxrw
+    email: rxrw@example.com

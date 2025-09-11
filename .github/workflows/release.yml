@@ -2,11 +2,21 @@ name: Release Charts
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
+    paths:
+      - "charts/**"
+      - ".cr.yaml"
+      - ".github/workflows/release.yml"
   workflow_dispatch:
+
+concurrency:
+  group: charts-release
+  cancel-in-progress: false
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   release:
@@ -21,6 +31,12 @@ jobs:
         uses: azure/setup-helm@v4
         with:
           version: v3.14.4
+
+      - name: Helm lint
+        run: |
+          for d in charts/*; do
+            [ -d "$d" ] && helm lint "$d"
+          done
 
       - name: Install chart-releaser
         run: |
@@ -37,23 +53,31 @@ jobs:
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cr upload \
-            --owner ${{ github.repository_owner }} \
-            --git-repo ${{ github.event.repository.name }} \
-            --skip-existing
+          cr upload --skip-existing --owner rxrw --git-repo helm-charts --package-path .cr-release-packages
 
-      - name: Build index.yaml to gh-pages
+      - name: Ensure gh-pages branch exists (first run bootstrap)
+        run: |
+          set -e
+          if ! git ls-remote --exit-code origin gh-pages >/dev/null 2>&1; then
+            echo "Bootstrapping gh-pages..."
+            git checkout --orphan gh-pages
+            git reset --hard
+            echo "apiVersion: v1" > index.yaml
+            echo "entries: {}" >> index.yaml
+            echo "generated: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" >> index.yaml
+            git add index.yaml
+            git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -m "bootstrap gh-pages"
+            git push -u origin gh-pages
+            git checkout -f -
+          fi
+
+      - name: Configure git identity (for cr index push)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Build & push index.yaml to gh-pages
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cr index \
-            --owner ${{ github.repository_owner }} \
-            --git-repo ${{ github.event.repository.name }} \
-            --charts-repo https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
-
-      - name: Publish gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs  # cr index 默认输出到 docs
-          publish_branch: gh-pages
+          cr index --push --owner rxrw --git-repo helm-charts --package-path .cr-release-packages --pages-branch gh-pages

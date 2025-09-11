@@ -1,0 +1,8 @@
+owner: rxrw
+git-repo: helm-charts
+package-path: .cr-release-packages
+index-path: .cr-index/index.yaml
+pages-branch: gh-pages
+pages-index-path: index.yaml
+remote: origin
+charts-repo: https://rxrw.github.io/helm-charts
