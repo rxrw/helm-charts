@@ -1,5 +1,29 @@
 apiVersion: v1
 entries:
+  asf:
+  - apiVersion: v2
+    appVersion: "1"
+    created: "2025-09-11T13:13:11.012897496Z"
+    description: A Helm chart for asf
+    digest: f993ef597f916073c6071a1b8d4f4a0f1e59f1fdcc77a777db5e869bacc0a916
+    icon: https://trakt.tv/assets/logos/white-bg@2x-626e9680c03d0542b3e26c3305f58050d2178e5d4222fac7831d83cf37fef42b.png
+    name: asf
+    type: application
+    urls:
+    - https://github.com/rxrw/helm-charts/releases/download/asf-0.1.3/asf-0.1.3.tgz
+    version: 0.1.3
+  ddns-go:
+  - apiVersion: v2
+    appVersion: "1"
+    created: "2025-09-11T13:13:11.151291061Z"
+    description: A Helm chart for ddns-go
+    digest: d9c740d9443b3699f87632360a51f4112f375f3647b97d2a614c7ec37cfd7c22
+    icon: https://trakt.tv/assets/logos/white-bg@2x-626e9680c03d0542b3e26c3305f58050d2178e5d4222fac7831d83cf37fef42b.png
+    name: ddns-go
+    type: application
+    urls:
+    - https://github.com/rxrw/helm-charts/releases/download/ddns-go-0.1.6/ddns-go-0.1.6.tgz
+    version: 0.1.6
   media-suite:
   - apiVersion: v2
     appVersion: 1.0.1
@@ -24,4 +48,16 @@ entries:
     urls:
     - https://github.com/rxrw/helm-charts/releases/download/media-suite-0.1.2/media-suite-0.1.2.tgz
     version: 0.1.2
-generated: "2025-09-11T12:38:52.163531672Z"
+  qinglong:
+  - apiVersion: v2
+    appVersion: "1"
+    created: "2025-09-11T13:13:11.309948501Z"
+    description: A Helm chart for qinglong
+    digest: 2304aff32a00e2cc98277dbf98f1a17e1ebe195cbf3ca01610385f96b0b6cf07
+    icon: https://trakt.tv/assets/logos/white-bg@2x-626e9680c03d0542b3e26c3305f58050d2178e5d4222fac7831d83cf37fef42b.png
+    name: qinglong
+    type: application
+    urls:
+    - https://github.com/rxrw/helm-charts/releases/download/qinglong-0.1.3/qinglong-0.1.3.tgz
+    version: 0.1.3
+generated: "2025-09-11T13:13:11.309954953Z"
