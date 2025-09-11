@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: jellyseerr
+  namespace: {{ .Values.namespace }}
+  labels: { app: jellyseerr }
+spec:
+  type: ClusterIP
+  selector: { app: jellyseerr }
+  ports:
+    - name: http
+      port: { { .Values.ports.jellyseerr } }
+      targetPort: http

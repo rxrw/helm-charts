@@ -4,9 +4,10 @@ images:
   sonarr: ghcr.io/linuxserver/sonarr:latest
   radarr: ghcr.io/linuxserver/radarr:latest
   bazarr: ghcr.io/linuxserver/bazarr:latest
+  jellyseerr: ghcr.io/linuxserver/jellyseerr:latest
 
-puid: 1000
-pgid: 1000
+puid: 1027
+pgid: 100
 tz: Asia/Shanghai
 umask: "022"
 
@@ -27,6 +28,7 @@ ports:
   sonarr: 8989
   radarr: 7878
   bazarr: 6767
+  jellyseerr: 5055
 
 gateway:
   name: edge      # 你的 Gateway 名字
@@ -41,3 +43,4 @@ gateway:
     sonarr: sonarr.tuna.io
     radarr: radarr.tuna.io
     bazarr: bazarr.tuna.io
+    jellyseerr: jellyseerr.tuna.io
