@@ -3,14 +3,17 @@ kind: Deployment
 metadata:
   name: sonarr
   namespace: {{ .Values.namespace }}
-  labels: { app: sonarr }
+  labels:
+    app: sonarr
 spec:
   replicas: 1
   selector:
-    matchLabels: { app: sonarr }
+    matchLabels:
+      app: sonarr
   template:
     metadata:
-      labels: { app: sonarr }
+      labels:
+        app: sonarr
     spec:
       containers:
         - name: sonarr

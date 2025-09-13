@@ -3,14 +3,17 @@ kind: Deployment
 metadata:
   name: radarr
   namespace: {{ .Values.namespace }}
-  labels: { app: radarr }
+  labels:
+    app: radarr
 spec:
   replicas: 1
   selector:
-    matchLabels: { app: radarr }
+    matchLabels:
+      app: radarr
   template:
     metadata:
-      labels: { app: radarr }
+      labels:
+        app: radarr
     spec:
       containers:
         - name: radarr

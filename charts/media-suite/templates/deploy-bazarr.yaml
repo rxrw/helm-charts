@@ -3,14 +3,17 @@ kind: Deployment
 metadata:
   name: bazarr
   namespace: {{ .Values.namespace }}
-  labels: { app: bazarr }
+  labels:
+    app: bazarr
 spec:
   replicas: 1
   selector:
-    matchLabels: { app: bazarr }
+    matchLabels:
+      app: bazarr
   template:
     metadata:
-      labels: { app: bazarr }
+      labels:
+        app: bazarr
     spec:
       containers:
         - name: bazarr

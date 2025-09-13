@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: jellyseerr
+  name: n8n
   namespace: {{ .Values.namespace }}
   labels:
-    app: jellyseerr
+    app: n8n
 spec:
   type: ClusterIP
   selector:
-    app: jellyseerr
+    app: n8n
   ports:
     - name: http
-      port: {{ .Values.ports.jellyseerr }}
+      port: {{ .Values.ports.n8n }}
       targetPort: http

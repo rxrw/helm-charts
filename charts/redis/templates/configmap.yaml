@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-config
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: redis
+data:
+  redis.conf: |
+    # Redis configuration
+    appendonly {{ .Values.redis.appendonly }}
+    appendfsync everysec
+    save 900 1
+    save 300 10
+    save 60 10000
+    maxmemory-policy allkeys-lru
+    tcp-keepalive 60
+    timeout 0
+{{- if .Values.redis.password }}
+    requirepass {{ .Values.redis.password }}
+{{- end }}

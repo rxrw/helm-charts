@@ -1,0 +1,43 @@
+# Default values for redis
+namespace: data
+
+# Image configuration
+image:
+  repository: redis
+  tag: "7-alpine"
+  pullPolicy: IfNotPresent
+
+# Port configuration
+port: 6379
+
+# Storage configuration
+storage:
+  class: nfs-shared
+  size: 1Gi
+
+# Redis configuration
+redis:
+  password: ""  # Set password if needed
+  persistence:
+    enabled: true
+  appendonly: "yes"
+
+# Resource limits
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 6379
+
+# Security context
+securityContext:
+  runAsUser: 999
+  runAsGroup: 999
+  fsGroup: 999

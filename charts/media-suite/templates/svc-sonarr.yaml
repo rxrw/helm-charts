@@ -3,10 +3,12 @@ kind: Service
 metadata:
   name: sonarr
   namespace: {{ .Values.namespace }}
-  labels: { app: sonarr }
+  labels:
+    app: sonarr
 spec:
   type: ClusterIP
-  selector: { app: sonarr }
+  selector:
+    app: sonarr
   ports:
     - name: http
       port: {{ .Values.ports.sonarr }}

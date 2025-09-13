@@ -12,15 +12,15 @@ tz: Asia/Shanghai
 umask: "022"
 
 media:
-  pvName: nfs-media-pv
-  pvcName: media-pvc
+  # pvName: nfs-media-pv  # 注释掉，让StorageClass自动分配
+  pvcName: nfs-media-pvc  # 重命名为更清晰的名称
   size: 20Ti
   accessModes:
     - ReadWriteMany
 
 config:
   storageClassName: nfs-shared
-  size: 20Ti
+  size: 2Gi
   accessModes:
     - ReadWriteMany
 

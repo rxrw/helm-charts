@@ -2,31 +2,32 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jellyseerr
-  namespace: { { .Values.namespace } }
-  labels: { app: jellyseerr }
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: jellyseerr
 spec:
   replicas: 1
   selector:
-    matchLabels: { app: jellyseerr }
+    matchLabels:
+      app: jellyseerr
   template:
     metadata:
-      labels: { app: jellyseerr }
+      labels:
+        app: jellyseerr
     spec:
       containers:
         - name: jellyseerr
-          image: { { .Values.images.jellyseerr } }
+          image: {{ .Values.images.jellyseerr }}
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: { { .Values.ports.jellyseerr } }
+              containerPort: {{ .Values.ports.jellyseerr }}
           env:
             - name: TZ
               value: "{{ .Values.tz }}"
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: media
-              mountPath: /media
           livenessProbe:
             httpGet:
               path: /
