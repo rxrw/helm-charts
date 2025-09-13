@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: qbittorrent
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: qbittorrent
+spec:
+  {{- if .Values.qbittorrent.hostNetwork }}
+  type: ClusterIP
+  {{- else }}
+  type: ClusterIP
+  {{- end }}
+  ports:
+    - name: webui
+      port: {{ .Values.qbittorrent.ports.webui }}
+      targetPort: webui
+      protocol: TCP
+    - name: bt-tcp
+      port: {{ .Values.qbittorrent.ports.bt }}
+      targetPort: bt-tcp
+      protocol: TCP
+    - name: bt-udp
+      port: {{ .Values.qbittorrent.ports.bt }}
+      targetPort: bt-udp
+      protocol: UDP
+  selector:
+    app: qbittorrent

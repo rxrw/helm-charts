@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vertex
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: vertex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vertex
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 100%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: vertex
+    spec:
+      containers:
+        - name: vertex
+          image: {{ .Values.images.vertex }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: {{ .Values.vertex.ports.http }}
+          resources:
+            limits:
+              cpu: {{ .Values.vertex.resources.limits.cpu }}
+              memory: {{ .Values.vertex.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.vertex.resources.requests.cpu }}
+              memory: {{ .Values.vertex.resources.requests.memory }}
+          volumeMounts:
+            - name: config
+              mountPath: /vertex
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: vertex-389041c8-60d6-4c46-bbd0-93d7b1ec6a62

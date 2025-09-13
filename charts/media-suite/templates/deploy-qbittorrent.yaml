@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbittorrent
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: qbittorrent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qbittorrent
+  template:
+    metadata:
+      labels:
+        app: qbittorrent
+    spec:
+      {{- if .Values.qbittorrent.nodeSelector }}
+      nodeSelector:
+        {{- toYaml .Values.qbittorrent.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.qbittorrent.hostNetwork }}
+      hostNetwork: {{ .Values.qbittorrent.hostNetwork }}
+      {{- end }}
+      {{- if .Values.qbittorrent.tolerations }}
+      tolerations:
+        {{- toYaml .Values.qbittorrent.tolerations | nindent 8 }}
+      {{- end }}
+      securityContext:
+        fsGroup: {{ .Values.pgid }}
+      containers:
+        - name: qbittorrent
+          image: {{ .Values.images.qbittorrent }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: webui
+              containerPort: {{ .Values.qbittorrent.ports.webui }}
+              {{- if .Values.qbittorrent.hostNetwork }}
+              hostPort: {{ .Values.qbittorrent.ports.webui }}
+              {{- end }}
+              protocol: TCP
+            - name: bt-tcp
+              containerPort: {{ .Values.qbittorrent.ports.bt }}
+              {{- if .Values.qbittorrent.hostNetwork }}
+              hostPort: {{ .Values.qbittorrent.ports.bt }}
+              {{- end }}
+              protocol: TCP
+            - name: bt-udp
+              containerPort: {{ .Values.qbittorrent.ports.bt }}
+              {{- if .Values.qbittorrent.hostNetwork }}
+              hostPort: {{ .Values.qbittorrent.ports.bt }}
+              {{- end }}
+              protocol: UDP
+          env:
+            - name: PUID
+              value: "{{ .Values.puid }}"
+            - name: PGID
+              value: "{{ .Values.pgid }}"
+            - name: TZ
+              value: "{{ .Values.tz }}"
+            - name: WEBUI_PORT
+              value: "{{ .Values.qbittorrent.ports.webui }}"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /media
+          livenessProbe:
+            httpGet:
+              path: /
+              port: webui
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: webui
+            initialDelaySeconds: 10
+            periodSeconds: 10
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: qb-config
+        - name: media
+          persistentVolumeClaim:
+            claimName: {{ .Values.media.pvcName }}

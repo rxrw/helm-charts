@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prowlarr
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: prowlarr
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: {{ .Values.prowlarr.ports.http }}
+      targetPort: http
+      nodePort: {{ .Values.prowlarr.ports.nodePort }}
+      protocol: TCP
+  selector:
+    app: prowlarr

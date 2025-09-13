@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: radarr
+  name: prowlarr
   namespace: {{ .Values.namespace }}
   labels:
-    app: radarr
+    app: prowlarr
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: radarr
+      app: prowlarr
   template:
     metadata:
       labels:
-        app: radarr
+        app: prowlarr
     spec:
       securityContext:
         fsGroup: {{ .Values.pgid }}
       containers:
-        - name: radarr
-          image: {{ .Values.images.radarr }}
+        - name: prowlarr
+          image: {{ .Values.images.prowlarr }}
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: {{ .Values.ports.radarr }}
+              containerPort: {{ .Values.prowlarr.ports.http }}
           env:
             - name: PUID
               value: "{{ .Values.puid }}"
@@ -36,12 +36,13 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            - name: media
-              mountPath: /media
+        - name: flaresolverr
+          image: {{ .Values.images.flaresolverr }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: flare-http
+              containerPort: {{ .Values.flaresolverr.ports.http }}
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: radarr-config
-        - name: media
-          persistentVolumeClaim:
-            claimName: {{ .Values.media.pvcName }}
+            claimName: prowlarr-config

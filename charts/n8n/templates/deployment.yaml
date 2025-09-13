@@ -15,6 +15,8 @@ spec:
       labels:
         app: n8n
     spec:
+      securityContext:
+        fsGroup: {{ .Values.pgid }}
       containers:
         - name: n8n
           image: {{ .Values.images.n8n }}
@@ -69,6 +71,12 @@ spec:
               value: "{{ .Values.n8n.binaryDataTtl }}"
             - name: N8N_BINARY_DATA_MAX_SIZE
               value: "{{ .Values.n8n.binaryDataMaxSize }}"
+            - name: N8N_ENCRYPTION_KEY
+              value: "{{ .Values.n8n.encryptionKey }}"
+            - name: EXTERNAL_HOOK_FILES
+              value: "/home/node/.n8n/hooks.js"
+            - name: N8N_FORWARD_AUTH_HEADER
+              value: "X-Auth-Request-Email"
 {{- if .Values.queue.enabled }}
             - name: QUEUE_BULL_REDIS_HOST
               value: "{{ .Values.queue.redis.host }}"
@@ -82,6 +90,9 @@ spec:
           volumeMounts:
             - name: n8n-data
               mountPath: /home/node/.n8n
+            - name: n8n-hooks
+              mountPath: /home/node/.n8n/hooks.js
+              subPath: hooks.js
           livenessProbe:
             httpGet:
               path: /healthz
@@ -100,3 +111,6 @@ spec:
         - name: n8n-data
           persistentVolumeClaim:
             claimName: n8n-data
+        - name: n8n-hooks
+          configMap:
+            name: n8n-hooks

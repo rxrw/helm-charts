@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xarr
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: xarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xarr
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 100%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: xarr
+    spec:
+      containers:
+        - name: xarr
+          image: {{ .Values.images.xarr }}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: {{ .Values.xarr.ports.http }}
+          resources:
+            limits:
+              cpu: {{ .Values.xarr.resources.limits.cpu }}
+              memory: {{ .Values.xarr.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.xarr.resources.requests.cpu }}
+              memory: {{ .Values.xarr.resources.requests.memory }}
+          volumeMounts:
+            - name: config
+              mountPath: /app/conf
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: xarr-e1722801-a572-40aa-83ea-8d1f7a8576b1

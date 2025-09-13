@@ -15,6 +15,8 @@ spec:
       labels:
         app: n8n-worker
     spec:
+      securityContext:
+        fsGroup: {{ .Values.pgid }}
       containers:
         - name: n8n-worker
           image: {{ .Values.images.worker }}
@@ -61,6 +63,8 @@ spec:
               value: "{{ .Values.n8n.binaryDataTtl }}"
             - name: N8N_BINARY_DATA_MAX_SIZE
               value: "{{ .Values.n8n.binaryDataMaxSize }}"
+            - name: N8N_ENCRYPTION_KEY
+              value: "{{ .Values.n8n.encryptionKey }}"
 {{- if .Values.queue.enabled }}
             - name: QUEUE_BULL_REDIS_HOST
               value: "{{ .Values.queue.redis.host }}"

@@ -24,5 +24,4 @@ spec:
             group: traefik.io
             kind: Middleware
             name: {{ index .Values.gateway.middlewares 0 }}
-            namespace: {{ .Values.gateway.namespace }}
 {{- end }}
