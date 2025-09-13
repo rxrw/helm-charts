@@ -20,7 +20,7 @@ media:
 
 config:
   storageClassName: nfs-shared
-  size: 20Ti
+  size: 2Gi
   accessModes:
     - ReadWriteMany
 

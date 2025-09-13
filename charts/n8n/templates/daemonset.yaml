@@ -1,0 +1,83 @@
+{{- if .Values.worker.enabled }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: n8n-worker
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: n8n-worker
+spec:
+  selector:
+    matchLabels:
+      app: n8n-worker
+  template:
+    metadata:
+      labels:
+        app: n8n-worker
+    spec:
+      containers:
+        - name: n8n-worker
+          image: {{ .Values.images.worker }}
+          imagePullPolicy: IfNotPresent
+          command: ["n8n", "worker"]
+          env:
+            - name: TZ
+              value: "{{ .Values.n8n.timezone }}"
+            - name: PUID
+              value: "{{ .Values.puid }}"
+            - name: PGID
+              value: "{{ .Values.pgid }}"
+            - name: N8N_MODE
+              value: "worker"
+            - name: N8N_HOST
+              value: "{{ .Values.gateway.hosts.n8n }}"
+            - name: N8N_PORT
+              value: "{{ .Values.ports.n8n }}"
+            - name: N8N_PROTOCOL
+              value: "https"
+            - name: N8N_WEBHOOK_URL
+              value: "{{ .Values.n8n.webhookUrl }}"
+            - name: N8N_EDITOR_BASE_URL
+              value: "{{ .Values.n8n.editorBaseUrl }}"
+            - name: DB_TYPE
+              value: "postgresdb"
+            - name: DB_POSTGRESDB_HOST
+              value: "{{ .Values.postgresql.host }}"
+            - name: DB_POSTGRESDB_PORT
+              value: "{{ .Values.postgresql.port }}"
+            - name: DB_POSTGRESDB_DATABASE
+              value: "{{ .Values.postgresql.database }}"
+            - name: DB_POSTGRESDB_USER
+              value: "{{ .Values.postgresql.username }}"
+            - name: DB_POSTGRESDB_PASSWORD
+              value: "{{ .Values.postgresql.password }}"
+            - name: N8N_METRICS
+              value: "{{ .Values.n8n.metrics }}"
+            - name: N8N_LOG_LEVEL
+              value: "{{ .Values.n8n.logLevel }}"
+            - name: N8N_DEFAULT_BINARY_DATA_MODE
+              value: "{{ .Values.n8n.binaryDataMode }}"
+            - name: N8N_BINARY_DATA_TTL
+              value: "{{ .Values.n8n.binaryDataTtl }}"
+            - name: N8N_BINARY_DATA_MAX_SIZE
+              value: "{{ .Values.n8n.binaryDataMaxSize }}"
+{{- if .Values.queue.enabled }}
+            - name: QUEUE_BULL_REDIS_HOST
+              value: "{{ .Values.queue.redis.host }}"
+            - name: QUEUE_BULL_REDIS_PORT
+              value: "{{ .Values.queue.redis.port }}"
+{{- if .Values.queue.redis.password }}
+            - name: QUEUE_BULL_REDIS_PASSWORD
+              value: "{{ .Values.queue.redis.password }}"
+{{- end }}
+{{- end }}
+          volumeMounts:
+            - name: n8n-data
+              mountPath: /home/node/.n8n
+          resources:
+            {{- toYaml .Values.worker.resources | nindent 12 }}
+      volumes:
+        - name: n8n-data
+          persistentVolumeClaim:
+            claimName: n8n-data
+{{- end }}

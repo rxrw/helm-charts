@@ -1,0 +1,79 @@
+# Default values for n8n
+namespace: default
+
+# Image configuration
+images:
+  n8n: n8nio/n8n:latest
+  worker: n8nio/n8n:latest
+
+# Port configuration
+ports:
+  n8n: 5678
+
+# Environment variables
+tz: "Asia/Shanghai"
+puid: 1000
+pgid: 1000
+
+# Storage configuration
+storage:
+  class: nfs-shared
+  size: 10Gi
+
+# PostgreSQL configuration (external)
+postgresql:
+  host: postgresql.data.svc.cluster.local
+  port: 5432
+  database: n8n
+  username: n8n
+  password: ""
+
+# Gateway configuration
+gateway:
+  name: gateway
+  namespace: default
+  hosts:
+    n8n: n8n.tuna.io
+  middlewares: []
+
+# Resource limits
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+# Worker configuration
+worker:
+  enabled: true
+  replicas: 1
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+# Queue configuration (for worker mode)
+queue:
+  enabled: true
+  type: "redis"  # or "bull" for in-memory queue
+  redis:
+    host: "redis.data.svc.cluster.local"  # External Redis service
+    port: 6379
+    password: ""  # Set password if needed
+
+# n8n specific configuration
+n8n:
+  mode: "main"  # main, worker, or queue
+  webhookUrl: "https://n8n.tuna.io"
+  editorBaseUrl: "https://n8n.tuna.io"
+  timezone: "Asia/Shanghai"
+  logLevel: "info"
+  metrics: true
+  binaryDataMode: "filesystem"
+  binaryDataTtl: 24
+  binaryDataMaxSize: 16777216

@@ -1,0 +1,34 @@
+# Default values for mysql
+image:
+  repository: mysql
+  tag: "8.0"
+
+service:
+  port: 3306
+
+# Database configuration
+database:
+  name: "mydb"
+  user: "mysql"
+  password: "mysql123"
+  rootPassword: "root123"
+
+# Storage configuration
+persistence:
+  enabled: true
+  storageClass: "nfs-shared"
+  accessMode: ReadWriteOnce
+  size: 10Gi
+
+# Resource limits
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "250m"
+  limits:
+    memory: "1Gi"
+    cpu: "500m"
+
+# Namespace
+namespace: data
+
