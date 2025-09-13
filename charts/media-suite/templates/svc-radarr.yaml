@@ -3,10 +3,12 @@ kind: Service
 metadata:
   name: radarr
   namespace: {{ .Values.namespace }}
-  labels: { app: radarr }
+  labels:
+    app: radarr
 spec:
   type: ClusterIP
-  selector: { app: radarr }
+  selector:
+    app: radarr
   ports:
     - name: http
       port: {{ .Values.ports.radarr }}

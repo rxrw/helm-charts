@@ -8,5 +8,9 @@ spec:
   resources:
     requests:
       storage: {{ .Values.media.size }}
+  {{- if .Values.media.pvName }}
   volumeName: {{ .Values.media.pvName }}
   storageClassName: ""
+  {{- else }}
+  storageClassName: nfs-shared
+  {{- end }}

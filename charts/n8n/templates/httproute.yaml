@@ -1,22 +1,22 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: jellyseerr
+  name: n8n
   namespace: {{ .Values.namespace }}
 spec:
   parentRefs:
     - name: {{ .Values.gateway.name }}
       namespace: {{ .Values.gateway.namespace }}
   hostnames:
-    - {{ .Values.gateway.hosts.jellyseerr }}
+    - {{ .Values.gateway.hosts.n8n }}
   rules:
     - matches:
         - path:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: jellyseerr
-          port: {{ .Values.ports.jellyseerr }}
+        - name: n8n
+          port: {{ .Values.ports.n8n }}
       filters:
 {{- if .Values.gateway.middlewares }}
         - type: ExtensionRef
